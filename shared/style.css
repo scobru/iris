@@ -213,7 +213,8 @@ details.settings label {
 }
 
 details.settings select,
-details.settings input[type="range"] {
+details.settings input[type="range"],
+details.settings input[type="file"] {
   font-family: 'JetBrains Mono', monospace;
   color: #e0e2ea;
   background: rgba(0, 0, 0, 0.3);
@@ -224,7 +225,8 @@ details.settings input[type="range"] {
 }
 
 details.settings select:focus,
-details.settings input[type="range"]:focus {
+details.settings input[type="range"]:focus,
+details.settings input[type="file"]:focus {
   outline: none;
   border-color: #7aa2f7;
 }

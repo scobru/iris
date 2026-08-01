@@ -21,16 +21,19 @@ const LOOKAHEAD = 3;
 
 const canvas = document.getElementById("qr") as HTMLCanvasElement;
 const specs = document.getElementById("specs")!;
-const cfgPayload = document.getElementById("cfg-payload") as HTMLSelectElement;
+const cfgFile = document.getElementById("cfg-file") as HTMLInputElement;
 const cfgFps = document.getElementById("cfg-fps") as HTMLSelectElement;
 const cfgBytes = document.getElementById("cfg-bytes") as HTMLSelectElement;
 const cfgEcc = document.getElementById("cfg-ecc") as HTMLSelectElement;
 const cfgSize = document.getElementById("cfg-size") as HTMLInputElement;
 
+let customPayload: Uint8Array | null = null;
 const payloadCache = new Map<string, Uint8Array>();
 let generation = 0; // bumped on every restart; stale loops see it and die
 
-async function loadPayload(url: string): Promise<Uint8Array | null> {
+async function getPayload(): Promise<Uint8Array | null> {
+  if (customPayload) return customPayload;
+  const url = "../success.png";
   const hit = payloadCache.get(url);
   if (hit) return hit;
   const res = await fetch(url);
@@ -41,9 +44,16 @@ async function loadPayload(url: string): Promise<Uint8Array | null> {
 }
 
 async function main() {
-  for (const el of [cfgPayload, cfgFps, cfgBytes, cfgEcc, cfgSize]) {
+  for (const el of [cfgFps, cfgBytes, cfgEcc, cfgSize]) {
     el.addEventListener("change", () => void startStream());
   }
+  cfgFile.addEventListener("change", async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+      customPayload = new Uint8Array(await file.arrayBuffer());
+      startStream();
+    }
+  });
   await startStream();
   try {
     await (navigator as Navigator & { wakeLock?: { request(t: "screen"): Promise<unknown> } })
@@ -55,9 +65,9 @@ async function main() {
 
 async function startStream() {
   const gen = ++generation;
-  const payload = await loadPayload(cfgPayload.value);
+  const payload = await getPayload();
   if (!payload) {
-    specs.textContent = `✗ couldn't load ${cfgPayload.value}`;
+    specs.textContent = `✗ couldn't load payload`;
     return;
   }
   if (gen !== generation) return; // superseded while fetching
