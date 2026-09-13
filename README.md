@@ -1,4 +1,8 @@
-# Decimen Optical Transfer: fountain-coded QR file transfer
+# Iris: Air-Gapped Optical File Transfer
+
+<p align="center">
+  <img src="public/favicon.svg" width="96" height="96" alt="Iris Logo" />
+</p>
 
 Send a file between two devices using nothing but a **screen and a camera**.
 One page displays the file as an endless stream of animated QR codes; another
@@ -21,6 +25,8 @@ in the sender's settings) at a comfortable rate.
 ## Try it
 
 ```bash
+git clone https://github.com/scobru/iris.git
+cd iris
 npm install
 npm run dev
 ```

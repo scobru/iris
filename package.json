@@ -1,9 +1,17 @@
 {
-  "name": "tunecamp-iris",
+  "name": "iris",
   "private": true,
   "version": "1.0.0",
   "license": "MIT",
-  "description": "Air-Gapped Optical Audio & Data Transfer for TuneCamp.",
+  "description": "Air-Gapped Optical Data Transfer via Fountain-Coded QR Streams",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scobru/iris.git"
+  },
+  "homepage": "https://github.com/scobru/iris#readme",
+  "bugs": {
+    "url": "https://github.com/scobru/iris/issues"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
